@@ -46,9 +46,9 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    var ownerEmail = config["Seed:OwnerEmail"] ?? Environment.GetEnvironmentVariable("MAKSI_OWNER_EMAIL") ?? "bar1walc@gmail.com";
-    var ownerPassword = config["Seed:OwnerPassword"] ?? Environment.GetEnvironmentVariable("MAKSI_OWNER_PW") ?? "Owner1!";
-    var ownerDisplay = config["Seed:OwnerDisplayName"] ?? "Chlebekk_";
+    var ownerEmail = config["Seed:OwnerEmail"] ?? Environment.GetEnvironmentVariable("MAKSI_OWNER_EMAIL") ?? "owner@example.com";
+    var ownerPassword = config["Seed:OwnerPassword"] ?? Environment.GetEnvironmentVariable("MAKSI_OWNER_PW") ?? "OwnerPassword123!";
+    var ownerDisplay = config["Seed:OwnerDisplayName"] ?? "Owner";
 
     var existing = await userManager.FindByEmailAsync(ownerEmail);
     if (existing == null)
