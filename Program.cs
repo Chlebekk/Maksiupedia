@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Maksiupedia.Data;
+using Maksiupedia.Models;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Maksiupedia.db"));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -31,13 +33,50 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var config = services.GetRequiredService<IConfiguration>();
 
-    string[] roles = { "Manager", "Admin", "Owner" };
+    string[] roles = new[] { "Manager", "Admin", "Owner" };
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
         {
-            await roleManager.CreateAsync(new IdentityRole(role));
+            var r = new IdentityRole(role);
+            await roleManager.CreateAsync(r);
+        }
+    }
+
+    var ownerEmail = config["Seed:OwnerEmail"] ?? Environment.GetEnvironmentVariable("MAKSI_OWNER_EMAIL") ?? "bar1walc@gmail.com";
+    var ownerPassword = config["Seed:OwnerPassword"] ?? Environment.GetEnvironmentVariable("MAKSI_OWNER_PW") ?? "Owner1!";
+    var ownerDisplay = config["Seed:OwnerDisplayName"] ?? "Chlebekk_";
+
+    var existing = await userManager.FindByEmailAsync(ownerEmail);
+    if (existing == null)
+    {
+        var owner = new ApplicationUser
+        {
+            UserName = ownerEmail,
+            Email = ownerEmail,
+            DisplayName = ownerDisplay,
+            EmailConfirmed = true
+        };
+        var createResult = await userManager.CreateAsync(owner, ownerPassword);
+        if (createResult.Succeeded)
+        {
+            await userManager.AddToRoleAsync(owner, "Owner");
+        }
+        else
+        {
+            var combined = string.Join("; ", createResult.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to create owner user: {combined}");
+        }
+    }
+    else
+    {
+        var hasOwnerRole = (await userManager.GetRolesAsync(existing)).Contains("Owner");
+        if (!hasOwnerRole)
+        {
+            await userManager.AddToRoleAsync(existing, "Owner");
         }
     }
 }
