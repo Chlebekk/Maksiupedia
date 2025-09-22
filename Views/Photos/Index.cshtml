@@ -1,0 +1,13 @@
+@model List<Maksiupedia.Models.Photo>
+
+    <h2>Maksiu my beloved</h2>
+
+    <div style="display:flex; flex-wrap:wrap;">
+        @foreach (var photo in Model)
+    {
+        <div style="margin:10px;">
+            <img src="@photo.Url" alt="@photo.Description" style="max-width:200px;" />
+            <p>@photo.Description</p>
+        </div>
+    }
+    </div>

@@ -1,8 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Controllers"
+    "\\Controllers",
+    "\\Models",
+    "\\obj",
+    "\\Properties",
+    "\\Views",
+    "\\Views\\Home",
+    "\\Views\\Shared"
   ],
-  "SelectedNode": "\\Controllers\\HomeController.cs",
+  "SelectedNode": "\\Views\\Home\\Gallery.cshtml",
   "PreviewInSolutionExplorer": false
 }
