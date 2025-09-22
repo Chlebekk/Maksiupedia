@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Maksiupedia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8fa60cfc4c24353ce86b1f0d2daded5436179bd2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24844b4b42fb6989582adb4ae464a0d3178fd1af")]
 [assembly: System.Reflection.AssemblyProductAttribute("Maksiupedia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Maksiupedia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
