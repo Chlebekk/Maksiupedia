@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Maksiupedia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24844b4b42fb6989582adb4ae464a0d3178fd1af")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da55f588ee82455553f2fbf54e15c58777360482")]
 [assembly: System.Reflection.AssemblyProductAttribute("Maksiupedia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Maksiupedia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

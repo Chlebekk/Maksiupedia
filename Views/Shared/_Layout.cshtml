@@ -1,68 +1,75 @@
-﻿@inject Microsoft.AspNetCore.Identity.UserManager<Maksiupedia.Models.ApplicationUser>
-    UserManager
-    @inject Microsoft.AspNetCore.Identity.SignInManager<Maksiupedia.Models.ApplicationUser>
-        SignInManager
+﻿@inject System.IServiceProvider ServiceProvider
 
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>@ViewData["Title"] - Maksiupedia</title>
-            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/Maksiupedia.styles.css" asp-append-version="true" />
-        </head>
-        <body>
-            <header>
-                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Maksiupedia</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Photos" asp-action="Index">Galeria</a>
-                                </li>
-                            </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Maksiupedia</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Maksiupedia.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Maksiupedia</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Photos" asp-action="Index">Galeria</a>
+                        </li>
+                    </ul>
 
-                            @if (SignInManager.IsSignedIn(User))
-                    {
-                        var currentUser = await UserManager.GetUserAsync(User);
-                        var roles = await UserManager.GetRolesAsync(currentUser);
-                        var roleInitial = roles.Count > 0 ? roles[0][0].ToString().ToUpper() : "?";
-
-                            <div class="user-header">
-                                <span class="badge">@roleInitial</span>
-                                <span class="user-name">@currentUser.DisplayName</span>
-                            </div>
+                    @{
+                        var signInManager = (Microsoft.AspNetCore.Identity.SignInManager<Maksiupedia.Models.ApplicationUser>)ServiceProvider.GetService(typeof(Microsoft.AspNetCore.Identity.SignInManager<Maksiupedia.Models.ApplicationUser>));
+                        var userManager = (Microsoft.AspNetCore.Identity.UserManager<Maksiupedia.Models.ApplicationUser>)ServiceProvider.GetService(typeof(Microsoft.AspNetCore.Identity.UserManager<Maksiupedia.Models.ApplicationUser>));
                     }
-                        </div>
+
+                    @if (signInManager != null && signInManager.IsSignedIn(User))
+                    {
+                        var currentUser = await userManager.GetUserAsync(User);
+                        if (currentUser != null)
+                        {
+                            var roles = await userManager.GetRolesAsync(currentUser);
+                            var roleInitial = roles.Count > 0 ? roles[0][0].ToString().ToUpper() : "?";
+
+                    <div class="user-header" style="margin-left:12px;">
+                        <span class="badge" style="display:inline-block;width:28px;height:28px;background:#007bff;color:#fff;border-radius:50%;text-align:center;line-height:28px;font-weight:700;">
+                            @roleInitial
+                        </span>
+                        <span class="user-name" style="margin-left:8px;font-weight:600;">@currentUser.DisplayName</span>
                     </div>
-                </nav>
-            </header>
-
-            <div class="container">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
-            </div>
-
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2025 - Maksiupedia
+                        }
+                    }
                 </div>
-            </footer>
+            </div>
+        </nav>
+    </header>
 
-            <script src="~/lib/jquery/dist/jquery.min.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-            @await RenderSectionAsync("Scripts", required: false)
-        </body>
-    </html>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Maksiupedia
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
